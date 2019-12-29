@@ -1,22 +1,11 @@
 function EventsInterface() {}
 EventsInterface.prototype = {
-	before: function(a) {
-		return null; // do nothing
-	},
-
-	during: function(a, b) {
-		return null; // do nothing
-	},
-
-	after: function(a, b, c) {
-		return null; // do nothing
-	}
+	before: function() {},
+	during: function() {},
+	after: function() {}
 };
 
 Function.prototype.implements = function() {
-	window.a = this;
-	window.b = arguments;
-
 	var bluePrint = this; // class
 	var methods = Object.keys(bluePrint.prototype);
 
@@ -28,8 +17,13 @@ Function.prototype.implements = function() {
 		for (var j in methods) {
 			var index = requiredMethods.indexOf(methods[j]); // index of required methods
 
-			if (index !== -1) {
-				requiredMethods.splice(index, 1); // reduce required method
+			if (index !== -1) { // check if method exist
+				var numOfParam = this.prototype[methods[j]].length;
+				var numOfRequiredParam = interfaces[i].prototype[methods[j]].length;
+
+				if (numOfParam === numOfRequiredParam) { // check if number of parameters are same
+					requiredMethods.splice(index, 1); // reduce required method
+				}
 			}
 		}
 
